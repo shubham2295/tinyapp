@@ -1,9 +1,22 @@
 const express = require('express');
 const app = express();
+const bodyParser = require("body-parser");
 const PORT = 8080; //default port 8080
 
-
+app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
+
+const generateRandomString = function() {
+
+  let result = "kas";
+  for (let i = 0; i < 3; i++) {
+    const randomNumber = Math.trunc(Math.random() * 9);
+    result += randomNumber;
+  }
+
+  return result;
+
+};
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -17,6 +30,16 @@ app.get('/', (req, res) => {
 app.get('/urls', (req, res) => {
   const templateVars = {urls: urlDatabase};
   res.render("urls_index", templateVars);
+});
+
+app.post("/urls", (req, res) => {
+  console.log(req.body);
+  res.send("Ok");
+});
+
+app.get("/urls/new", (req, res) => {
+  //const templateVars = 0;
+  res.render("urls_new");
 });
 
 app.get("/urls/:shortURL", (req, res) => {

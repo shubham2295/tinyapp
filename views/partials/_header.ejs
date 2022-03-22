@@ -19,20 +19,16 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
+        <% if(user === undefined || user.email === undefined){%>
+        <a class="nav-item nav-link" href="/register">Register</a>
       </div>
-      <% if(user === undefined || user.email === undefined){%>
-      <form class="form-inline" method="POST" action="/login">
-        <input
-          class="form-control mr-sm-2"
-          type="text"
-          placeholder="Username"
-          name="username"
-        />
+      <a class="form-inline text-decoration-none" href="/login">
         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">
           Login
         </button>
-      </form>
+      </a>
       <% } else{%>
+      </div>
       <form class="form-inline" method="POST" action="/logout">
         <div class="mr-sm-2">Logged in As: <%=user.email%></div>
         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">

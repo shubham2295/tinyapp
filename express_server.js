@@ -43,7 +43,10 @@ const emailSearch = function(users, email) {
   return false;
 };
 
-app.post('/login', (req, res) => {
+app.route('/login').get((req, res) => {
+  const templateVars = {user: users[req.cookies['user_id']]};
+  res.render('login', templateVars);
+}).post((req, res) => {
   res.redirect('/urls');
 });
 

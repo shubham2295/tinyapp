@@ -32,11 +32,11 @@ const generateRandomString = function() {
   return Math.random().toString(36).substring(2, 8);
 };
 
-const emailSearch = function(users, email) {
+const userSearch = function(email) {
   for (const user in users) {
     for (const value in users[user]) {
       if (users[user][value] === email) {
-        return true;
+        return users[user];
       }
     }
   }
@@ -47,7 +47,20 @@ app.route('/login').get((req, res) => {
   const templateVars = {user: users[req.cookies['user_id']]};
   res.render('login', templateVars);
 }).post((req, res) => {
-  res.redirect('/urls');
+
+  const email = req.body.email;
+  const pwd = req.body.password;
+  const user = userSearch(email);
+
+  if (!user) {
+    return res.status(403).send('User not found. Please check email or register.');
+  } else if (pwd !== user.password) {
+    return res.status(403).send('Incorrect password. Please try again with correct password.');
+  } else {
+    res.cookie('user_id', user.id);
+    res.redirect('/urls');
+  }
+
 });
 
 app.post('/logout', (req, res) => {
@@ -107,7 +120,7 @@ app.route('/register').get((req, res) => {
     return;
   }
 
-  if (emailSearch(users, userEmail)) {
+  if (typeof (userSearch(userEmail)) === 'object') {
     res.status(400).send('Email already exists please register with another email address.');
     return;
   }

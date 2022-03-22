@@ -20,7 +20,7 @@
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
-      <% if(username === undefined){%>
+      <% if(user === undefined || user.email === undefined){%>
       <form class="form-inline" method="POST" action="/login">
         <input
           class="form-control mr-sm-2"
@@ -34,7 +34,7 @@
       </form>
       <% } else{%>
       <form class="form-inline" method="POST" action="/logout">
-        <div class="mr-sm-2">Logged in As: <%=username%></div>
+        <div class="mr-sm-2">Logged in As: <%=user.email%></div>
         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">
           Logout
         </button>

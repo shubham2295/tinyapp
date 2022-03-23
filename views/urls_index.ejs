@@ -17,8 +17,22 @@
     <title>TinyApp</title>
   </head>
   <%- include('partials/_header') %>
+
   <body>
     <main style="margin: 1em">
+      <% if(user === undefined){%>
+      <h1></h1>
+      <div
+        class="d-flex align-items-center justify-content-around"
+        style="margin: 15vh 10vw"
+      >
+        <div>
+          <h4>☹️ Looks like you are not logged in.</h4>
+          <h4>Please Login or Register for better experience.</h4>
+        </div>
+        <div><%- include('partials/login.svg') %></div>
+      </div>
+      <%} else {%>
       <h3>My URLs</h3>
       <table class="table">
         <thead>
@@ -49,9 +63,10 @@
               </form>
             </td>
           </tr>
-          <% } %>
+          <% }%>
         </tbody>
       </table>
+      <%}%>
     </main>
     <!-- Bootstrap JS -->
     <script

@@ -8,32 +8,91 @@
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
-    <title>URL - TinyApp Example</title>
+    <title>TinyApp Show URL</title>
   </head>
   <%- include('partials/_header') %>
   <body>
     <div class="card text-center">
       <div class="card-header"></div>
       <div class="card-body">
-        <h5 class="card-title">TinyURL for: <%= longURL %></h5>
-        <p class="card-text">
-          Short URL: <a href="/u/<%= shortURL %>" target="_blank"><%= shortURL %></a>
-        </p>
+        <div class="d-flex flex-row justify-content-around align-items-center">
+          <div class="text-center">
+            <h5 class="card-title">TinyURL for: <%= longURL %></h5>
+            <p class="card-text">
+              Short URL:
+              <a href="/u/<%= shortURL %>" target="_blank"><%= shortURL %></a>
+            </p>
+          </div>
+          <div>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th colspan="2">Stats</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Unique Visits</td>
+                  <td>Total Visits</td>
+                </tr>
+                <tr>
+                  <td><%=uniqueVisits%></td>
+                  <td><%=totalVisits%></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
+
     <div class="card text-center">
       <div class="card-body">
         <h5 class="card-title">Edit</h5>
-          <form class="form-inline" style="justify-content: center" action="/urls/<%=shortURL%>" method="POST">          
-            <div class="form-group mb-2"> 
-              <label for="longURL">URL:</label>                        
-              <input type="text" class="form-control" name="longURL" value="<%=longURL%>" style ="width: 300px; margin: 1em">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-          </form>
-        </p>
+        <form
+          class="form-inline"
+          style="justify-content: center"
+          action="/urls/<%=shortURL%>?_method=PUT"
+          method="POST"
+        >
+          <div class="form-group mb-2">
+            <label for="longURL">URL:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="longURL"
+              value="<%=longURL%>"
+              style="width: 300px; margin: 1em"
+            />
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
       </div>
     </div>
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Visitor ID</th>
+          <th scope="col">Time</th>
+        </tr>
+      </thead>
+      <% if(visits === undefined){%>
+      </table>
+      <%} else {%>
+      <tbody>
+        <%let i = 1%>
+        <% for(let visit in visits) { %>
+        <tr>
+          <th scope="row"><%=i%></th>
+          <td><%=visit%></td>
+          <td><%=visits[visit]%></td>
+        </tr>
+        <%i++%>
+        <%}%>
+        <%}%>
+      </tbody>
+    </table>
 
     <!-- Bootstrap JS -->
     <script

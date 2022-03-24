@@ -14,41 +14,43 @@
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
-    <title>TinyApp</title>
+    <title>TinyApp Login</title>
   </head>
   <%- include('partials/_header') %>
   <body>
     <main>
-      <h1 class="text-center" style="margin: 30px 0">Login</h1>
-      <form
-        class="d-flex flex-column align-items-center"
-        method="POST"
-        action="/login"
-      >
-        <label for="email" style="font-size: 1.2rem; font-weight: 600"
-          >Email Address</label
+      <div class="container" style="margin-top: 5em">
+        <h1 class="text-center" style="margin: 30px 0">Login</h1>
+        <form
+          class="d-flex flex-column align-items-center"
+          method="POST"
+          action="/login"
         >
-        <input
-          class="form-control-lg"
-          type="email"
-          name="email"
-          placeholder="Enter email"
-          style="margin: 0 0 10px 0"
-        />
-        <label for="password" style="font-size: 1.2rem; font-weight: 600"
-          >Password</label
-        >
-        <input
-          class="form-control-lg"
-          type="password"
-          name="password"
-          placeholder="Password"
-        />
+          <label for="email" style="font-size: 1.2rem; font-weight: 600"
+            >Email Address</label
+          >
+          <input
+            class="form-control-lg"
+            type="email"
+            name="email"
+            placeholder="Enter email"
+            style="margin: 0 0 10px 0"
+          />
+          <label for="password" style="font-size: 1.2rem; font-weight: 600"
+            >Password</label
+          >
+          <input
+            class="form-control-lg"
+            type="password"
+            name="password"
+            placeholder="Password"
+          />
 
-        <button type="submit" class="btn btn-primary" style="margin: 20px 0">
-          Login
-        </button>
-      </form>
+          <button type="submit" class="btn btn-primary" style="margin: 20px 0">
+            Login
+          </button>
+        </form>
+      </div>
     </main>
     <!-- Bootstrap JS -->
     <script

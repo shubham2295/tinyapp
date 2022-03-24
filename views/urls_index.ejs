@@ -14,7 +14,7 @@
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
-    <title>TinyApp</title>
+    <title>TinyApp Home</title>
   </head>
   <%- include('partials/_header') %>
 
@@ -34,7 +34,7 @@
       </div>
       <%} else {%>
       <h3>My URLs</h3>
-      <table class="table">
+      <table class="table text-center">
         <thead>
           <tr>
             <th scope="col">Short URL</th>
@@ -47,7 +47,7 @@
           <% for(let url in urls) { %>
           <tr>
             <td><%= url %></td>
-            <td><%= urls[url] %></td>
+            <td><%= urls[url].longURL %></td>
             <td>
               <form method="GET" action="/urls/<%= url %>">
                 <button type="submit" class="btn btn-outline-primary">
@@ -56,7 +56,7 @@
               </form>
             </td>
             <td>
-              <form method="POST" action="/urls/<%= url %>/delete">
+              <form method="POST" action="/urls/<%= url %>/?_method=DELETE">
                 <button type="submit" class="btn btn-outline-danger">
                   Delete
                 </button>

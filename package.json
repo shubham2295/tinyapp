@@ -5,7 +5,8 @@
   "main": "express_server.js",
   "scripts": {
     "watch": "nodemon",
-    "test": "mocha"
+    "test": "mocha",
+    "tinyapp": "node express_server.js"
   },
   "repository": {
     "type": "git",

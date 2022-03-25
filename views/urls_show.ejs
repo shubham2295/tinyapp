@@ -17,7 +17,7 @@
       <div class="card-body">
         <div class="d-flex flex-row justify-content-around align-items-center">
           <div class="text-center">
-            <h5 class="card-title">TinyURL for: <%= longURL %></h5>
+            <h5 class="card-title">TinyURL for: <%=  shortURLObj.longURL %></h5>
             <p class="card-text">
               Short URL:
               <a href="/u/<%= shortURL %>" target="_blank"><%= shortURL %></a>
@@ -36,8 +36,8 @@
                   <td>Total Visits</td>
                 </tr>
                 <tr>
-                  <td><%=uniqueVisits%></td>
-                  <td><%=totalVisits%></td>
+                  <td><%= shortURLObj.uniqueVisitors.length %></td>
+                  <td><%= shortURLObj.totalVisits %></td>
                 </tr>
               </tbody>
             </table>
@@ -52,7 +52,7 @@
         <form
           class="form-inline"
           style="justify-content: center"
-          action="/urls/<%=shortURL%>?_method=PUT"
+          action="/urls/<%= shortURL %>?_method=PUT"
           method="POST"
         >
           <div class="form-group mb-2">
@@ -61,7 +61,7 @@
               type="text"
               class="form-control"
               name="longURL"
-              value="<%=longURL%>"
+              value="<%= shortURLObj.longURL %>"
               style="width: 300px; margin: 1em"
             />
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -77,16 +77,16 @@
           <th scope="col">Time</th>
         </tr>
       </thead>
-      <% if(visits === undefined){%>
+      <% if(Object.keys(shortURLObj.visits).length === 0){%>
       </table>
       <%} else {%>
       <tbody>
         <%let i = 1%>
-        <% for(let visit in visits) { %>
+        <% for(let visit in shortURLObj.visits) { %>
         <tr>
           <th scope="row"><%=i%></th>
           <td><%=visit%></td>
-          <td><%=visits[visit]%></td>
+          <td><%=shortURLObj.visits[visit]%></td>
         </tr>
         <%i++%>
         <%}%>

@@ -288,6 +288,6 @@ app.get('*', (req, res) => {
 });
 
 //-------------Mapping port to the express app--------------
-app.listen(PORT, () => {
+app.listen(process.env.PORT || PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });

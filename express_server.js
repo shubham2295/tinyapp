@@ -2,16 +2,14 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const morgan = require('morgan');
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
 const methodOverride = require('method-override');
-const {generateRandomString, getUserByEmail, urlsForUser, createErrorObject} = require('./helpers');
-const PORT = 8080;
+const { generateRandomString, getUserByEmail, urlsForUser, createErrorObject, users, urlDatabase } = require('./helpers');
+const PORT = process.env.PORT || 8080;
 
 //-------------Middlewears--------------------------------------------
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(cookieSession({
   name: 'session',
@@ -21,56 +19,15 @@ app.use(cookieSession({
 
 //-------------View engine setup---------------------------------------
 app.set('view engine', 'ejs');
-
+app.set('views', './views');
 //-------------Static Database-----------------------------------------
-const users = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
-    hashedPassword: "purple-monkey-dinosaur"
-  },
-  "user2RandomID": {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    hashedPassword: "dishwasher-funk"
-  },
-  "user3RandomID": {
-    id: "user3RandomID",
-    email: "abc@xyz.com",
-    hashedPassword: "$2a$10$leC5Ic51JIohQIVXpW9XbuZiNrffCBiBz7N7dw2EBgWYggwWJdgaC"
-  }
-};
-
-const urlDatabase = {
-  "b2xVn2": {
-    longURL: "http://www.lighthouselabs.ca",
-    userID: "user3RandomID",
-    totalVisits: 0,
-    visits: {},
-    uniqueVisitors: []
-  },
-  "9sm5xK": {
-    longURL: "http://www.google.ca",
-    userID: "user3RandomID",
-    totalVisits: 0,
-    visits: {},
-    uniqueVisitors: []
-  },
-  "111111": {
-    longURL: "http://www.instagram.com",
-    userID: "userRandomID",
-    totalVisits: 0,
-    visits: {},
-    uniqueVisitors: []
-  },
-};
 
 //-------------Login route-------------------------------------------------
 app.route('/login')
   .get((req, res) => {
 
     if (!users[req.session.user_id]) {
-      const templateVars = {user: users[req.session.user_id]};
+      const templateVars = { user: users[req.session.user_id] };
       return res.render('login', templateVars);
     } else {
       return res.redirect('/urls');
@@ -79,7 +36,7 @@ app.route('/login')
   })
   .post((req, res) => {
 
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     const user = getUserByEmail(email, users);
 
     //Validating login and displaying error according to the different conditions
@@ -127,7 +84,7 @@ app.route('/urls')
   .get((req, res) => {
 
     const currentUserID = req.session.user_id;
-    const templateVars = {urls: urlsForUser(currentUserID, urlDatabase), user: users[currentUserID]};
+    const templateVars = { urls: urlsForUser(currentUserID, urlDatabase), user: users[currentUserID] };
     res.render('urls_index', templateVars);
 
   })
@@ -156,7 +113,7 @@ app.get('/urls/new', (req, res) => {
   if (!req.session.user_id) {
     return res.redirect('/login');
   }
-  const templateVars = {user: users[req.session.user_id]};
+  const templateVars = { user: users[req.session.user_id] };
   res.render('urls_new', templateVars);
 
 });
@@ -237,7 +194,7 @@ app.get('/home', (req, res) => {
   if (users[req.session.user_id]) {
     return res.redirect('/urls');
   }
-  const templateVars = {user: users[req.session.user_id]};
+  const templateVars = { user: users[req.session.user_id] };
   res.render('home', templateVars);
 
 });
@@ -287,7 +244,7 @@ app.route('/register')
 
     //Redirecting to registration form if user is not logged in
     if (!users[req.session.user_id]) {
-      const templateVars = {users, user: users[req.session.user_id]};
+      const templateVars = { users, user: users[req.session.user_id] };
       res.render('user_registration', templateVars);
     } else {
       res.redirect('/urls');
@@ -297,7 +254,7 @@ app.route('/register')
   })
   .post((req, res) => {
 
-    const {email: userEmail, password: userPassword} = req.body;
+    const { email: userEmail, password: userPassword } = req.body;
 
     //Checking for errors on the login form
     if (userEmail === "" || userPassword === "") {
@@ -316,7 +273,7 @@ app.route('/register')
 
     //Creating user
     const userID = generateRandomString();
-    users[userID] = {id: userID, email: userEmail, hashedPassword: bcrypt.hashSync(userPassword, 10)};
+    users[userID] = { id: userID, email: userEmail, hashedPassword: bcrypt.hashSync(userPassword, 10) };
     req.session.user_id = userID;
     console.table(users);
     return res.redirect('/urls');

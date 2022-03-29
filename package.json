@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "nodemon",
     "test": "mocha",
-    "tinyapp": "node express_server.js"
+    "tinyapp": "node express_server.js",
+    "start": "node express_server.js"
   },
   "repository": {
     "type": "git",
